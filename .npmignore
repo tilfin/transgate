@@ -1,4 +1,7 @@
 test/
+docs/
 examples/
 Makefile
 .travis.yml
+.jsdoc.json
+

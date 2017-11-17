@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BufferGate.html">BufferGate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BufferGate.html#read">read</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BufferGate.html#write">write</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="FileGate.html">FileGate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="FileGate.html#read">read</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="FileGate.html#write">write</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HttpClientGate.html">HttpClientGate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HttpClientGate.html#write">write</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="HttpServerGate.html">HttpServerGate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HttpServerGate.html#close">close</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="HttpServerGate.html#read">read</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="MemoryGate.html">MemoryGate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="MemoryGate.html#read">read</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="MemoryGate.html#write">write</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="StdoutGate.html">StdoutGate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="StdoutGate.html#write">write</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Transaction.html">Transaction</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Transaction.html#.create">create</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Transaction.html#.start">start</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Transaction.html#main">main</a></span></li>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>Transgate</h1><p><a href="https://travis-ci.org/tilfin/transgate"><img src="https://travis-ci.org/tilfin/transgate.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/github/tilfin/transgate?branch=master"><img src="https://coveralls.io/repos/github/tilfin/transgate/badge.svg?branch=master" alt="Coverage Status"></a></p>
+<p>Task unit framework for JavaScript</p>
+<h2>Actors in this framework</h2><ul>
+<li><strong>Gate</strong> is an endpoint of Input/Output. For example, file storage, database or API service.</li>
+<li><strong>Transaction</strong> is a work between In/Out Gates and does not know anything opposite gate.</li>
+<li><strong>Item</strong> is a task target unit and an Object or a JSON. <code>null</code> indicates a terminator.</li>
+</ul>
+<h2>Install</h2><pre class="prettyprint source"><code>npm install -save transgate</code></pre><h2>Examples</h2><pre class="prettyprint source lang-javascript"><code>const {
+  Transaction,
+  BufferGate,
+  MemoryGate,
+  StdoutGate,
+} = require('./');
+
+class Value2x extends Transaction {
+  async main(item) {
+    item.value *= 2;
+    return item;
+  }
+}
+
+const input = new MemoryGate([
+  { value: 1 }, { value: 2 },
+  { value: 3 }, { value: 4 }
+]);
+const joint = new BufferGate();
+const output = new StdoutGate();
+
+Transaction.start(
+  Transaction.create(input, joint, async (item) => {
+    item.value *= 2;
+    return item;
+  }),
+  new ValueAdd1(joint, output),
+)
+.catch(err => {
+  console.error(err);
+});</code></pre><pre class="prettyprint source lang-json"><code>{&quot;value&quot;:3}
+{&quot;value&quot;:5}
+{&quot;value&quot;:7}
+{&quot;value&quot;:9}</code></pre></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Nov 17 2017 23:14:09 GMT+0900 (JST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
