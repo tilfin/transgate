@@ -1,0 +1,37 @@
+{
+  "name": "transgate",
+  "version": "0.0.1",
+  "description": "Task unit framework",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {
+    "supertest": "^3.0.0",
+    "supertest-as-promised": "^4.0.2"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^4.0.1",
+    "mocha-lcov-reporter": "^1.3.0"
+  },
+  "scripts": {
+    "test": "mocha test/**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tilfin/transgate.git"
+  },
+  "keywords": [
+    "task",
+    "framework"
+  ],
+  "author": "Toshimitsu Takahashi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tilfin/transgate/issues"
+  },
+  "homepage": "https://github.com/tilfin/transgate#readme"
+}
