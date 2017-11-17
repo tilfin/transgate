@@ -1,9 +1,13 @@
 # Transgate
 
+[![npm](https://img.shields.io/npm/v/transgate.svg)](https://www.npmjs.com/package/transgate)
+[![Node](https://img.shields.io/node/v/transgate.svg)]()
+[![document](https://img.shields.io/badge/document-0.1.0-orange.svg)](https://tilfin.github.io/transgate/transgate/0.1.0/)
+[![License](https://img.shields.io/github/license/tilfin/transgate.svg)]()
 [![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
 [![Coverage Status](https://coveralls.io/repos/github/tilfin/transgate/badge.svg?branch=master)](https://coveralls.io/github/tilfin/transgate?branch=master)
 
-Task unit framework for JavaScript
+Task unit flow framework for JavaScript
 
 ## Actors in this framework
 

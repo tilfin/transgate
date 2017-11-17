@@ -35,5 +35,6 @@
   "bugs": {
     "url": "https://github.com/tilfin/transgate/issues"
   },
-  "homepage": "https://github.com/tilfin/transgate#readme"
+  "homepage": "https://github.com/tilfin/transgate#readme",
+  "engines": { "node" : ">=8" }
 }
