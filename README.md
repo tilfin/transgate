@@ -1,5 +1,8 @@
 # Transgate
 
+[![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
+[![Coverage Status](https://coveralls.io/repos/github/tilfin/transgate/badge.svg?branch=master)](https://coveralls.io/github/tilfin/transgate?branch=master)
+
 Task unit framework for JavaScript
 
 ## Actors in this framework
