@@ -1,5 +1,5 @@
 const assert = require('assert');
-const request = require('supertest-as-promised');
+const request = require('supertest');
 
 describe('HttpServerGate', () => {
   const HttpServerGate = require('../../lib/gate/http_server');

@@ -8,8 +8,7 @@
     "test": "test"
   },
   "dependencies": {
-    "supertest": "^3.0.0",
-    "supertest-as-promised": "^4.0.2"
+    "supertest": "^3.0.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
