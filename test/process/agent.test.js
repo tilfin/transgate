@@ -1,7 +1,7 @@
 const assert = require('assert');
 
-describe('Transaction', () => {
-  const Transaction = require('../../lib/transaction');
+describe('Agent', () => {
+  const Agent = require('../../lib/process/agent');
   const { JointGate, MemoryGate } = require('../../lib/gate');
 
   describe('#run', () => {
@@ -9,7 +9,7 @@ describe('Transaction', () => {
       const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
       const outgate = new MemoryGate();
 
-      const transaction = new Transaction(ingate, outgate);
+      const transaction = new Agent(ingate, outgate);
       transaction.main = async (item) => {
         item.val *= 3;
         item.done = true;
@@ -27,7 +27,7 @@ describe('Transaction', () => {
       const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
       const outgate = new MemoryGate();
 
-      const transaction = new Transaction(ingate, outgate);
+      const transaction = new Agent(ingate, outgate);
       transaction.main = async (item, outgate) => {
         item.val *= 5;
         item.done = true;
@@ -47,7 +47,7 @@ describe('Transaction', () => {
       const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
       const outgate = new MemoryGate();
 
-      const transaction = Transaction.create(ingate, outgate, async (item) => {
+      const transaction = Agent.create(ingate, outgate, async (item) => {
         item.val -= 1;
         item.done = true;
         return item;
@@ -62,14 +62,14 @@ describe('Transaction', () => {
   })
 
   describe('#start', () => {
-    class Value3times extends Transaction {
+    class Value3times extends Agent {
       async main(item) {
         item.val *= 3;
         return item;
       }
     }
 
-    class SetDoneFalse extends Transaction {
+    class SetDoneFalse extends Agent {
       async main(item) {
         item.done = false;
         return item;
@@ -81,7 +81,7 @@ describe('Transaction', () => {
       const outgate = new MemoryGate();
       const joint = new JointGate();
 
-      await Transaction.start(
+      await Agent.start(
         new Value3times(ingate, joint),
         new SetDoneFalse(joint, outgate),
       )
@@ -96,7 +96,7 @@ describe('Transaction', () => {
       const outgate = new MemoryGate();
       const joint = new JointGate();
 
-      await Transaction.start(
+      await Agent.start(
         new SetDoneFalse(joint, outgate),
         new Value3times(ingate, joint),
       )
