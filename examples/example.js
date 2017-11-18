@@ -19,7 +19,7 @@ const input = new MemoryGate([
 const joint = new JointGate();
 const output = new StdoutGate();
 
-Agent.start(
+Agent.all(
   Agent.create(input, joint, async (item) => {
     item.value *= 2;
     return item;

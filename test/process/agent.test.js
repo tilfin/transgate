@@ -157,7 +157,7 @@ describe('Agent', () => {
       const outgate = new MemoryGate();
       const joint = new JointGate();
 
-      await Agent.start(
+      await Agent.all(
         new Value3times(ingate, joint),
         new SetDoneFalse(joint, outgate),
       )
@@ -172,7 +172,7 @@ describe('Agent', () => {
       const outgate = new MemoryGate();
       const joint = new JointGate();
 
-      await Agent.start(
+      await Agent.all(
         new SetDoneFalse(joint, outgate),
         new Value3times(ingate, joint),
       )

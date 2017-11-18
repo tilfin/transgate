@@ -7,12 +7,12 @@
 [![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
 [![Coverage Status](https://coveralls.io/repos/github/tilfin/transgate/badge.svg?branch=master)](https://coveralls.io/github/tilfin/transgate?branch=master)
 
-Unit task flow framework for Node.js
+Unit agent flow framework for Node.js
 
 ## Actors in this framework
 
 * **Gate** is an endpoint of Input/Output. For example, file storage, database or API service.
-* **Agent** is a work between In/Out Gates and does not know anything opposite gate.
+* **Agent** is a worker to process an item between Input/Output gates and does not know anything opposite gates.
 * **Item** is a task target unit and an Object or a JSON. `null` indicates a terminator.
 
 ## Install
@@ -45,7 +45,7 @@ const input = new MemoryGate([
 const joint = new JointGate();
 const output = new StdoutGate();
 
-Agent.start(
+Agent.all(
   Agent.create(input, joint, async (item) => {
     item.value *= 2;
     return item;
