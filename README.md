@@ -7,7 +7,7 @@
 [![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
 [![Coverage Status](https://coveralls.io/repos/github/tilfin/transgate/badge.svg?branch=master)](https://coveralls.io/github/tilfin/transgate?branch=master)
 
-Task unit flow framework for JavaScript
+Unit task flow framework for Node.js
 
 ## Actors in this framework
 

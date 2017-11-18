@@ -5,7 +5,7 @@ describe('Transaction', () => {
   const { MemoryGate, BufferGate } = require('../../lib/gate');
 
   describe('#run', () => {
-    it('works rightly', async () => {
+    it('works main that returns the result', async () => {
       const input = new MemoryGate([{ val: 1 }, { val: 2 }]);
       const output = new MemoryGate();
 
@@ -20,6 +20,24 @@ describe('Transaction', () => {
       assert.deepEqual(output.data, [
         { val: 3, done: true },
         { val: 6, done: true }
+      ]);
+    });
+
+    it('works main that writes the result to output', async () => {
+      const input = new MemoryGate([{ val: 1 }, { val: 2 }]);
+      const output = new MemoryGate();
+
+      const transaction = new Transaction(input, output);
+      transaction.main = async (item, op) => {
+        item.val *= 5;
+        item.done = true;
+        op.write(item);
+      };
+
+      await transaction.run();
+      assert.deepEqual(output.data, [
+        { val: 5, done: true },
+        { val: 10, done: true }
       ]);
     });
   });

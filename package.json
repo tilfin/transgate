@@ -1,7 +1,7 @@
 {
   "name": "transgate",
-  "version": "0.1.0",
-  "description": "Task unit framework",
+  "version": "0.2.0",
+  "description": "Unit task flow framework",
   "main": "index.js",
   "directories": {
     "lib": "lib",

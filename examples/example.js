@@ -6,9 +6,9 @@ const {
 } = require('../');
 
 class ValueAdd1 extends Transaction {
-  async main(item) {
+  async main(item, output) {
     item.value += 1;
-    return item;
+    output.write(item);
   }
 }
 
