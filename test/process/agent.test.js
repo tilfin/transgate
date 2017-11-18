@@ -75,6 +75,47 @@ describe('Agent', () => {
         ]);
       })
     })
+
+    context('when raise an error', () => {
+      it('after hook works and catches the error', async () => {
+        const ingate = new MemoryGate([{ value: 1 }]);
+        const outgate = new MemoryGate();
+
+        const confirmProcessOrder = [];
+
+        class RaiseErrorAgent extends Agent {
+          async before() {
+            confirmProcessOrder.push('1 Do before');
+          }
+
+          async after() {
+            confirmProcessOrder.push('3 Do after');
+          }
+
+          async main() {
+            confirmProcessOrder.push('2 Raise error');
+            throw new Error('dummy error');
+          }
+        }
+
+        const agent = new RaiseErrorAgent(ingate, outgate);
+
+        try {
+          await agent.run();
+        } catch(e) {
+          confirmProcessOrder.push('4 Catched error');
+          assert.equal(e.message, 'dummy error');
+        }
+
+        assert.equal(outgate.data.length, 0); // not sended
+        assert.deepEqual(confirmProcessOrder, [
+          '1 Do before',
+          '2 Raise error',
+          '3 Do after',
+          '4 Catched error'
+        ]);
+      })
+    })
   })
 
   describe('#create', () => {

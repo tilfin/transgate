@@ -5,9 +5,9 @@ const StdoutGate = require('../../lib/gate/stdout');
 
 describe('StdoutGate', () => {
 
-  describe('#receive', () => {
+  describe('#send', () => {
 
-    it('returns stdout data', async () => {
+    it('outputs sended data', async () => {
       stdMocks.use();
       const outgate = new StdoutGate();
       await outgate.send({ a: 1 });
