@@ -1,59 +1,94 @@
 const assert = require('assert');
 
+const Agent = require('../../lib/process/agent');
+const { JointGate, MemoryGate } = require('../../lib/gate');
+
 describe('Agent', () => {
-  const Agent = require('../../lib/process/agent');
-  const { JointGate, MemoryGate } = require('../../lib/gate');
 
   describe('#run', () => {
-    it('works main that returns the result', async () => {
-      const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
-      const outgate = new MemoryGate();
+    context('only one outgate', () => {
+      it('works main that returns the result', async () => {
+        const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
+        const outgate = new MemoryGate();
 
-      const transaction = new Agent(ingate, outgate);
-      transaction.main = async (item) => {
-        item.val *= 3;
-        item.done = true;
-        return item;
-      };
+        const agent = new Agent(ingate, outgate);
+        agent.main = async (item) => {
+          item.val *= 3;
+          item.done = true;
+          return item;
+        };
 
-      await transaction.run();
-      assert.deepEqual(outgate.data, [
-        { val: 3, done: true },
-        { val: 6, done: true }
-      ]);
+        await agent.run();
+        assert.deepEqual(outgate.data, [
+          { val: 3, done: true },
+          { val: 6, done: true }
+        ]);
+      })
+
+      it('works main that writes the result to outgate', async () => {
+        const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
+        const outgate = new MemoryGate();
+
+        const agent = new Agent(ingate, outgate);
+        agent.main = async (item, outgate) => {
+          item.val *= 5;
+          item.done = true;
+          outgate.send(item);
+        };
+
+        await agent.run();
+        assert.deepEqual(outgate.data, [
+          { val: 5, done: true },
+          { val: 10, done: true }
+        ]);
+      })
     })
 
-    it('works main that writes the result to outgate', async () => {
-      const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
-      const outgate = new MemoryGate();
+    context('plural outgates', () => {
+      it('works main that returns the result', async () => {
+        const ingate = new MemoryGate([
+          { city: 'Tokyo', country: 'Japan' },
+          { city: 'Paris', country: 'France' },
+          { city: 'Osaka', country: 'Japan' },
+          { city: 'London', country: 'United Kingdom' },
+        ]);
+        const japanGate = new MemoryGate();
+        const franceGate = new MemoryGate();
 
-      const transaction = new Agent(ingate, outgate);
-      transaction.main = async (item, outgate) => {
-        item.val *= 5;
-        item.done = true;
-        outgate.send(item);
-      };
+        const agent = new Agent(ingate, { japanGate, franceGate });
+        agent.main = async (item, { japanGate, franceGate }) => {
+          if (item.country === 'Japan') {
+            japanGate.send(item);
+          } else if (item.country === 'France') {
+            franceGate.send(item);
+          }
+        };
 
-      await transaction.run();
-      assert.deepEqual(outgate.data, [
-        { val: 5, done: true },
-        { val: 10, done: true }
-      ]);
+        await agent.run();
+
+        assert.deepEqual(japanGate.data, [
+          { city: 'Tokyo', country: 'Japan' },
+          { city: 'Osaka', country: 'Japan' },
+        ]);
+        assert.deepEqual(franceGate.data, [
+          { city: 'Paris', country: 'France' },
+        ]);
+      })
     })
   })
 
   describe('#create', () => {
-    it('returns a transaction instance and it works rightly', async () => {
+    it('returns a agent instance and it works rightly', async () => {
       const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
       const outgate = new MemoryGate();
 
-      const transaction = Agent.create(ingate, outgate, async (item) => {
+      const agent = Agent.create(ingate, outgate, async (item) => {
         item.val -= 1;
         item.done = true;
         return item;
       });
 
-      await transaction.run();
+      await agent.run();
       assert.deepEqual(outgate.data, [
         { val: 0, done: true },
         { val: 1, done: true }
@@ -76,7 +111,7 @@ describe('Agent', () => {
       }
     }
 
-    it('proceeds transactions', async () => {
+    it('proceeds agents', async () => {
       const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
       const outgate = new MemoryGate();
       const joint = new JointGate();
@@ -91,7 +126,7 @@ describe('Agent', () => {
       ]);
     })
 
-    it('proceeds transactions without the order of start args', async () => {
+    it('proceeds agents without the order of start args', async () => {
       const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
       const outgate = new MemoryGate();
       const joint = new JointGate();
