@@ -1,32 +1,34 @@
 const fs = require('fs');
 const assert = require('assert');
 
+const FileGate = require('../../lib/gate/file');
+
 describe('FileGate', () => {
-  const FileGate = require('../../lib/gate/file');
   const fixturePath = './test/fixtures/data.json';
 
-  describe('#read()', () => {
-    it('reads data from file', async () => {
+  describe('#receive', () => {
+    it('returns data from file', async () => {
       const t = new FileGate(fixturePath);
-      assert.deepEqual(await t.read(), { a: 1 });
-      assert.deepEqual(await t.read(), { a: 2 });
-      assert.equal(await t.read(), null);
-    });
-  });
+      assert.deepEqual(await t.receive(), { a: 1 });
+      assert.deepEqual(await t.receive(), { a: 2 });
+      assert.equal(await t.receive(), null);
+    })
+  })
 
-  describe('#write()', () => {
+  describe('#send', () => {
     it('appends data to file', async () => {
       const writtenPath = '/tmp/dummy' + (new Date().getTime()) + '.json';
 
       const t = new FileGate(writtenPath);
-      await t.write({ a: 1 });
-      await t.write({ a: 2 });
+      await t.send({ a: 1 });
+      await t.send({ a: 2 });
 
       const wdata = fs.readFileSync(writtenPath, { encoding: 'utf8' });
       const tdata = fs.readFileSync(fixturePath, { encoding: 'utf8' });
       assert.deepEqual(wdata, tdata);
 
       fs.unlinkSync(writtenPath);
-    });
-  });
-});
+    })
+  })
+
+})

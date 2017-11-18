@@ -1,23 +1,24 @@
 const assert = require('assert');
+const MemoryGate = require('../../lib/gate/memory');
 
 describe('MemoryGate', () => {
-  const MemoryGate = require('../../lib/gate/memory');
 
-  describe('#read()', () => {
-    it('reads initial data', async () => {
+  describe('#receive', () => {
+    it('returns initial data', async () => {
       const t = new MemoryGate([{ a: 1 }, { a: 2 }]);
-      assert.deepEqual(await t.read(), { a: 1 });
-      assert.deepEqual(await t.read(), { a: 2 });
-      assert.equal(await t.read(), null);
-    });
-  });
+      assert.deepEqual(await t.receive(), { a: 1 });
+      assert.deepEqual(await t.receive(), { a: 2 });
+      assert.equal(await t.receive(), null);
+    })
+  })
 
-  describe('#write()', () => {
+  describe('#send', () => {
     it('appends data', async () => {
       const t = new MemoryGate();
-      await t.write({ a: 1 });
-      await t.write({ a: 2 });
+      await t.send({ a: 1 });
+      await t.send({ a: 2 });
       assert.deepEqual(t.data, [{ a: 1 }, { a: 2 }]);
-    });
-  });
-});
+    })
+  })
+
+})

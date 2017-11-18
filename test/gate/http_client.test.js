@@ -1,10 +1,11 @@
 const assert = require('assert');
 
-describe('HttpClientGate', () => {
-  const HttpClientGate = require('../../lib/gate/http_client');
-  const HttpServerGate = require('../../lib/gate/http_server');
+const HttpClientGate = require('../../lib/gate/http_client');
+const HttpServerGate = require('../../lib/gate/http_server');
 
-  describe('#write', () => {
+describe('HttpClientGate', () => {
+
+  describe('#send', () => {
     const item = { a: 1, b: 'str' };
 
     it('posts items server and the gate returns them', async () => {
@@ -16,16 +17,17 @@ describe('HttpClientGate', () => {
 
       await Promise.all([
         (async () => {
-          await cgate.write(item);
-          await cgate.write(null);
+          await cgate.send(item);
+          await cgate.send(null);
         })(),
         (async () => {
-          const result1 = await sgate.read();
-          const result2 = await sgate.read();
+          const result1 = await sgate.receive();
+          const result2 = await sgate.receive();
           assert.deepEqual(result1, item);
           assert.equal(result2, null);
         })(),
       ]);
-    });
-  });
-});
+    })
+  })
+
+})

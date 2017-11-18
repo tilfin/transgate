@@ -2,14 +2,14 @@ const assert = require('assert');
 
 describe('Transaction', () => {
   const Transaction = require('../../lib/transaction');
-  const { MemoryGate, BufferGate } = require('../../lib/gate');
+  const { JointGate, MemoryGate } = require('../../lib/gate');
 
   describe('#run', () => {
     it('works main that returns the result', async () => {
-      const input = new MemoryGate([{ val: 1 }, { val: 2 }]);
-      const output = new MemoryGate();
+      const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
+      const outgate = new MemoryGate();
 
-      const transaction = new Transaction(input, output);
+      const transaction = new Transaction(ingate, outgate);
       transaction.main = async (item) => {
         item.val *= 3;
         item.done = true;
@@ -17,49 +17,49 @@ describe('Transaction', () => {
       };
 
       await transaction.run();
-      assert.deepEqual(output.data, [
+      assert.deepEqual(outgate.data, [
         { val: 3, done: true },
         { val: 6, done: true }
       ]);
-    });
+    })
 
-    it('works main that writes the result to output', async () => {
-      const input = new MemoryGate([{ val: 1 }, { val: 2 }]);
-      const output = new MemoryGate();
+    it('works main that writes the result to outgate', async () => {
+      const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
+      const outgate = new MemoryGate();
 
-      const transaction = new Transaction(input, output);
-      transaction.main = async (item, op) => {
+      const transaction = new Transaction(ingate, outgate);
+      transaction.main = async (item, outgate) => {
         item.val *= 5;
         item.done = true;
-        op.write(item);
+        outgate.send(item);
       };
 
       await transaction.run();
-      assert.deepEqual(output.data, [
+      assert.deepEqual(outgate.data, [
         { val: 5, done: true },
         { val: 10, done: true }
       ]);
-    });
-  });
+    })
+  })
 
   describe('#create', () => {
     it('returns a transaction instance and it works rightly', async () => {
-      const input = new MemoryGate([{ val: 1 }, { val: 2 }]);
-      const output = new MemoryGate();
+      const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
+      const outgate = new MemoryGate();
 
-      const transaction = Transaction.create(input, output, async (item) => {
+      const transaction = Transaction.create(ingate, outgate, async (item) => {
         item.val -= 1;
         item.done = true;
         return item;
       });
 
       await transaction.run();
-      assert.deepEqual(output.data, [
+      assert.deepEqual(outgate.data, [
         { val: 0, done: true },
         { val: 1, done: true }
       ]);
-    });
-  });
+    })
+  })
 
   describe('#start', () => {
     class Value3times extends Transaction {
@@ -77,33 +77,34 @@ describe('Transaction', () => {
     }
 
     it('proceeds transactions', async () => {
-      const input = new MemoryGate([{ val: 1 }, { val: 2 }]);
-      const output = new MemoryGate();
-      const joint = new BufferGate();
+      const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
+      const outgate = new MemoryGate();
+      const joint = new JointGate();
 
       await Transaction.start(
-        new Value3times(input, joint),
-        new SetDoneFalse(joint, output),
+        new Value3times(ingate, joint),
+        new SetDoneFalse(joint, outgate),
       )
-      assert.deepEqual(output.data, [
+      assert.deepEqual(outgate.data, [
         { val: 3, done: false },
         { val: 6, done: false }
       ]);
-    });
+    })
 
     it('proceeds transactions without the order of start args', async () => {
-      const input = new MemoryGate([{ val: 1 }, { val: 2 }]);
-      const output = new MemoryGate();
-      const joint = new BufferGate();
+      const ingate = new MemoryGate([{ val: 1 }, { val: 2 }]);
+      const outgate = new MemoryGate();
+      const joint = new JointGate();
 
       await Transaction.start(
-        new SetDoneFalse(joint, output),
-        new Value3times(input, joint),
+        new SetDoneFalse(joint, outgate),
+        new Value3times(ingate, joint),
       )
-      assert.deepEqual(output.data, [
+      assert.deepEqual(outgate.data, [
         { val: 3, done: false },
         { val: 6, done: false }
       ]);
-    });
-  });
-});
+    })
+  })
+
+})
