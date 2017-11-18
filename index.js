@@ -1,4 +1,4 @@
-const Transaction = require('./lib/transaction');
+const Agent = require('./lib/process/agent');
 const gate = require('./lib/gate');
 
-module.exports = Object.assign({ Transaction }, gate);
+module.exports = Object.assign({ Agent }, gate);

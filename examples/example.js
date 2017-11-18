@@ -1,11 +1,11 @@
 const {
-  Transaction,
-  BufferGate,
+  Agent,
+  JointGate,
   MemoryGate,
   StdoutGate,
 } = require('../');
 
-class ValueAdd1 extends Transaction {
+class ValueAdd1 extends Agent {
   async main(item, output) {
     item.value += 1;
     output.write(item);
@@ -16,11 +16,11 @@ const input = new MemoryGate([
   { value: 1 }, { value: 2 },
   { value: 3 }, { value: 4 }
 ]);
-const joint = new BufferGate();
+const joint = new JointGate();
 const output = new StdoutGate();
 
-Transaction.start(
-  Transaction.create(input, joint, async (item) => {
+Agent.start(
+  Agent.create(input, joint, async (item) => {
     item.value *= 2;
     return item;
   }),
