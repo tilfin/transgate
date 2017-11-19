@@ -1,7 +1,7 @@
 {
   "name": "transgate",
-  "version": "0.3.0",
-  "description": "Agent based task flow framework",
+  "version": "0.3.1",
+  "description": "Agent-based task flow framework",
   "main": "index.js",
   "directories": {
     "lib": "lib",
@@ -29,7 +29,7 @@
     "url": "git+https://github.com/tilfin/transgate.git"
   },
   "keywords": [
-    "task",
+    "taskflow",
     "framework"
   ],
   "author": "Toshimitsu Takahashi",

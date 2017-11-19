@@ -7,7 +7,7 @@
 [![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
 [![Coverage Status](https://coveralls.io/repos/github/tilfin/transgate/badge.svg?branch=master)](https://coveralls.io/github/tilfin/transgate?branch=master)
 
-Agent based task flow framework for Node.js
+Agent-based task flow framework for Node.js
 
 ## Install
 
