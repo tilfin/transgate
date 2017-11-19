@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/transgate.svg)](https://www.npmjs.com/package/transgate)
 [![Node](https://img.shields.io/node/v/transgate.svg)]()
-[![document](https://img.shields.io/badge/document-0.3.3-orange.svg)](https://tilfin.github.io/transgate/transgate/0.3.3/)
+[![document](https://img.shields.io/badge/document-0.4.0-orange.svg)](https://tilfin.github.io/transgate/transgate/0.4.0/)
 [![License](https://img.shields.io/github/license/tilfin/transgate.svg)]()
 [![dependencies Status](https://david-dm.org/tilfin/transgate/status.svg)](https://david-dm.org/tilfin/transgate)
 [![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
@@ -59,6 +59,7 @@ There are the following gates in this library.
 * WriteFileGate - Writing sended items to a file for Output
 * HttpServerGate - Receiving an item that is a body POSTed by HTTP client for Input
 * HttpClientGate - Sending an item as POST request body to fixed HTTP server endpoint for Output
+* IntervalGate - Providing an item contains the time every interval passing for Input
 * StdinGate - Reading each line as an item from stdin for Input
 * StdoutGate - Writing sended items to stdout for Output
 * JointGate - Pipes an agent to another one
