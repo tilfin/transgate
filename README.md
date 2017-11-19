@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/transgate.svg)](https://www.npmjs.com/package/transgate)
 [![Node](https://img.shields.io/node/v/transgate.svg)]()
-[![document](https://img.shields.io/badge/document-0.3.0-orange.svg)](https://tilfin.github.io/transgate/transgate/0.3.0/)
+[![document](https://img.shields.io/badge/document-0.3.3-orange.svg)](https://tilfin.github.io/transgate/transgate/0.3.3/)
 [![License](https://img.shields.io/github/license/tilfin/transgate.svg)]()
 [![dependencies Status](https://david-dm.org/tilfin/transgate/status.svg)](https://david-dm.org/tilfin/transgate)
 [![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
@@ -20,7 +20,7 @@ npm install -save transgate
 
 * **Gate** is an endpoint of Input/Output. For example, file storage, database, queue or API service.
 * **Agent** is a worker to process an **item** between Input/Output **gates** and does not know anything opposite **gates**.
-* **Item** is an entity as each task target, to be exchanged between **gates** and an *Object* or a *JSON*. `null` indicates the terminator.
+* **Item** is an entity as each task target, to be exchanged between **gates**, and an *Object* or a *JSON*. `null` indicates the terminator.
 
 ## How it works
 
@@ -33,26 +33,43 @@ If the **agent** receives `null` as an **item**, sends `null` to all next **gate
 * All agents must be given gates for input and output in the constructor and run independently.
 * A gate is easy to replace because the interface of the item is a simple *Object*.
 
-## Standard gates
+## Implements
+
+### Gate
+
+* A gate for Input must implement `receive` *Promise* method that resolves an **item**.
+* A gate for Output must implement `send` *Promise* method with argument an **item**. `send` resolves when completes to write the item.
+
+### Agent
+
+* An agent inherits `Agent` class and overrides `async main(item, outGate)` method to process an `item` and send it to `outGate`.
+* To create an agent instance is to call `new YourAgent(inGate, outGate)`. If the `outGate` is plural, it need be replaced with key-value-based `{ outGate1, outGate2 }` in order to have `async main(item, { outGate1, outGate2 })`.
+* If the agent uses any daemon, overrides `async before()` to launch it and `async after()` to shut down it.
+
+### Starting
+
+To start agents is calling `Agent.all(...yourAgents)` *Promise* method. If you use any daemons in some gates, They should be shut down after `all` *Promise* has done.
+
+## Standard Gate classes
 
 There are the following gates in this library.
 
-* MemoryGate - For test, supports both Input/Output
+* MemoryGate - Supports both Input/Output for test
 * ReadFileGate - Reading each line as an item from a file for Input
 * WriteFileGate - Writing sended items to a file for Output
 * HttpServerGate - Receiving an item that is a body POSTed by HTTP client for Input
 * HttpClientGate - Sending an item as POST request body to fixed HTTP server endpoint for Output
-* StdinGate - Reading each line as item from stdin for Input
+* StdinGate - Reading each line as an item from stdin for Input
 * StdoutGate - Writing sended items to stdout for Output
 * JointGate - Pipes an agent to another one
 
 ## An example
 
-### Agents
-* Agent1 : item.value x 2
-* Agent2 : item.value + 1
+### About agents
+1. (No name)   : item.value x 2
+2. `ValueAdd1` : item.value + 1
 
-### Connection agent with gates
+### About connections between agent and gates
 * memory --> Agent1 --> joint
 * joint  --> Agent2 --> stdout
 
@@ -72,8 +89,7 @@ class ValueAdd1 extends Agent {
 }
 
 const inputGate = new MemoryGate([
-  { value: 1 }, { value: 2 },
-  { value: 3 }, { value: 4 }
+  { value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }
 ]);
 const joint = new JointGate();
 const stdoutGate = new StdoutGate();
@@ -98,4 +114,3 @@ Agent.all(
 {"value":7}
 {"value":9}
 ```
-
