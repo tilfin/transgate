@@ -4,6 +4,7 @@
 [![Node](https://img.shields.io/node/v/transgate.svg)]()
 [![document](https://img.shields.io/badge/document-0.3.0-orange.svg)](https://tilfin.github.io/transgate/transgate/0.3.0/)
 [![License](https://img.shields.io/github/license/tilfin/transgate.svg)]()
+[![dependencies Status](https://david-dm.org/tilfin/transgate/status.svg)](https://david-dm.org/tilfin/transgate)
 [![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
 [![Coverage Status](https://coveralls.io/repos/github/tilfin/transgate/badge.svg?branch=master)](https://coveralls.io/github/tilfin/transgate?branch=master)
 
@@ -64,25 +65,25 @@ const {
 } = require('transgate');
 
 class ValueAdd1 extends Agent {
-  async main(item, output) {
+  async main(item, stdoutGate) {
     item.value += 1;
-    output.write(item);
+    stdoutGate.send(item);
   }
 }
 
-const memory = new MemoryGate([
+const inputGate = new MemoryGate([
   { value: 1 }, { value: 2 },
   { value: 3 }, { value: 4 }
 ]);
 const joint = new JointGate();
-const stdout = new StdoutGate();
+const stdoutGate = new StdoutGate();
 
 Agent.all(
-  Agent.create(memory, joint, async (item) => {
+  Agent.create(inputGate, joint, async (item) => {
     item.value *= 2;
     return item;
   }),
-  new ValueAdd1(joint, stdout),
+  new ValueAdd1(joint, stdoutGate),
 )
 .catch(err => {
   console.error(err);
