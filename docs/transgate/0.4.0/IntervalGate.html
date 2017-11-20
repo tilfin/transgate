@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>process/agent.js - Documentation</title>
+    <title>IntervalGate - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,107 +29,382 @@
 
 <div id="main">
     
-    <h1 class="page-title">process/agent.js</h1>
+    <h1 class="page-title">IntervalGate</h1>
     
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Process an item read from Input Gate and write into Output Gate
- */
-class Agent {
+        <h2>
+        IntervalGate
+        </h2>
+        
+            <div class="class-description"><p>Interval Gate for Input providing items at regular intervals</p></div>
+        
+    
+</header>
 
-  /**
-   * @param {Gate} ingate - Input gate
-   * @param {Gate|Object&lt;string, Gate>} outgate - Output gate or its map
-   */
-  constructor(ingate, outgate) {
-    this._ingate = ingate;
-    this._outgate = outgate;
-  }
+<article>
+    <div class="container-overview">
+    
+        
+<div class="section-method">
 
-  /**
-   * Processes should be defined before all transactions
-   */
-  async before() {
-  }
+    
+    <h2>Constructor</h2>
+    
 
-  /**
-   * Processes should be defined after all transactions
-   */
-  async after() {
-  }
+    <h4 class="name" id="IntervalGate"><span class="type-signature"></span>new IntervalGate<span class="signature">(seconds)</span><span class="type-signature"></span></h4>
 
-  async run() {
-    await this.before();
+    
 
-    let error = null;
-    try {
-      let item;
-      while ((item = await this._ingate.receive()) !== null) {
-        const result = await this.main(item, this._outgate);
-        if (result !== undefined) {
-          this._outgate.send(result);
-        }
-      }
 
-      //console.info('send null')
-      if (typeof this._outgate.send === 'function') {
-        await this._outgate.send(null);
-      } else {
-        await Promise.all(Object.values(this._outgate).map(og => og.send(null)));
-      }
-    } catch(err) {
-      error = err;
-    }
 
-    await this.after();
 
-    if (error) throw error;
-  }
 
-  /**
-   * Process main Promise function
-   * @param {object} item - read item
-   * @param {Array&lt;OutputGate>} outgates - Output gates
-   * @return {object|array} written item(s). it is an array if output is plural. `undefined` iss not written.
-   */
-  async main(item, outgates) {
-  }
 
-}
 
-/**
- * Shorthand to create Agent
- * @param  {Gate} ingate   - Input gate
- * @param {Gate|Object&lt;string, Gate>} outgate - Output gate or its map
- * @param  {Promise} main - Process main Promise function
- * @return {Agent} created one
- */
-Agent.create = function(ingate, outgate, main) {
-  const action = new Agent(ingate, outgate);
-  action.main = main;
-  return action;
-}
+<dl class="details">
 
-/**
- * Start all agents
- * @param  {Agent} ...agents - Agent(s)
- * @return {Promise} A Promise that resolves when all agents have done
- */
-Agent.all = async function(...agents) {
-  return await Promise.all(agents.map(t => t.run()));
-}
+    
 
-module.exports = Agent;
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gate_interval.js.html">gate/interval.js</a>, <a href="gate_interval.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>seconds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>number</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>receiving to be resolved every specified seconds</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="clear"><span class="type-signature"></span>clear<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Stop</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gate_interval.js.html">gate/interval.js</a>, <a href="gate_interval.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="receive"><span class="type-signature"></span>receive<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Item is <code>{ time: &lt;Date&gt; }</code>.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gate_interval.js.html">gate/interval.js</a>, <a href="gate_interval.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>Promise</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <ul>
+<li>A promise that resolves an item when the item is written</li>
+</ul>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

@@ -1,7 +1,7 @@
 test/
 docs/
 examples/
+coverage/
 Makefile
 .travis.yml
 .jsdoc.json
-
