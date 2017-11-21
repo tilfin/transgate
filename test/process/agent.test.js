@@ -1,7 +1,6 @@
 const assert = require('assert');
 
-const Agent = require('../../lib/process/agent');
-const { JointGate, MemoryGate } = require('../../lib/gate');
+const { Agent, JointGate, MemoryGate } = require('../../');
 
 describe('Agent', () => {
 
