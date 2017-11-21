@@ -1,6 +1,6 @@
 {
   "name": "transgate",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Agent-based task flow framework",
   "main": "index.js",
   "directories": {

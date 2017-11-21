@@ -1,4 +1,4 @@
-const Agent = require('./lib/process/agent');
+const proc = require('./lib/process');
 const gate = require('./lib/gate');
 
-module.exports = Object.assign({ Agent }, gate);
+module.exports = Object.assign({}, proc, gate);
