@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/transgate.svg)](https://www.npmjs.com/package/transgate)
 [![Node](https://img.shields.io/node/v/transgate.svg)]()
-[![document](https://img.shields.io/badge/document-0.4.0-orange.svg)](https://tilfin.github.io/transgate/transgate/0.4.0/)
+[![document](https://img.shields.io/badge/document-0.5.0-orange.svg)](https://tilfin.github.io/transgate/transgate/0.5.0/)
 [![License](https://img.shields.io/github/license/tilfin/transgate.svg)]()
 [![dependencies Status](https://david-dm.org/tilfin/transgate/status.svg)](https://david-dm.org/tilfin/transgate)
 [![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
@@ -63,6 +63,10 @@ There are the following gates in this library.
 * StdinGate - Reading each line as an item from stdin for Input
 * StdoutGate - Writing sended items to stdout for Output
 * JointGate - Pipes an agent to another one
+
+## Converter for Gate
+* mixer - Receiving items from some gates for Input
+* duplicator - Sending an item the multiple gates for Output
 
 ## An example
 
