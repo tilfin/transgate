@@ -119,3 +119,6 @@ Agent.all(
 {"value":7}
 {"value":9}
 ```
+
+## Reference articles
+- [Transgate is Agent-based taskflow framework for Node.js - dev.to](https://dev.to/tilfin/transgate-is-agent-based-taskflow-framework-for-nodejs-58b)
