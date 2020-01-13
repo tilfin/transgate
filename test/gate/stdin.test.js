@@ -1,7 +1,7 @@
-const assert = require('assert');
-const stdin = require('mock-stdin').stdin();
+const assert = require('assert')
+const stdin = require('mock-stdin').stdin()
 
-const StdinGate = require('../../lib/gate/stdin');
+const { StdinGate } = require('../../dist/lib/gate/stdin')
 
 describe('StdinGate', () => {
 

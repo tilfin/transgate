@@ -1,7 +1,6 @@
-const fs = require('fs');
-const assert = require('assert');
+const assert = require('assert')
 
-const ReadFileGate = require('../../lib/gate/read_file');
+const { ReadFileGate } = require('../../dist/lib/gate/read_file')
 
 describe('ReadFileGate', () => {
   const fixturePath = './test/fixtures/data.json';

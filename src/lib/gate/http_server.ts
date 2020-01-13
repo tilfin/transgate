@@ -1,20 +1,22 @@
-const http = require('http');
-const URL  = require('url');
+import http from 'http'
 
-const ItemBuffer = require('./buffer');
+import { ItemBuffer } from './buffer'
+import { GateItem, InGate } from './type'
 
 /**
  * HTTP server Gate for Input
  */
-class HttpServerGate {
+export class HttpServerGate<T extends GateItem> implements InGate<T> {
+
+  private _buffer: ItemBuffer<T>
+  private _server: http.Server | null
 
   /**
    * @param {number} options.port - listen port
    * @param {string} options.host - bind host
    */
-  constructor(options) {
-    const opts = options || {};
-    const { port=18000, host } = opts;
+  constructor(options: any = {}) {
+    const { port=18000, host } = options;
 
     this._buffer = new ItemBuffer();
 
@@ -61,7 +63,7 @@ class HttpServerGate {
   /**
    * @return {Promise<object>} - A promise that resolves the item when recevied
    */
-  async receive() {
+  async receive(): Promise<T | null> {
     const entry = await this._buffer.read();
     if (entry === null) {
       await this.close();
@@ -86,5 +88,3 @@ class HttpServerGate {
     }
   }
 }
-
-module.exports = HttpServerGate;

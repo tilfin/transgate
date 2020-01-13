@@ -1,6 +1,6 @@
-const assert = require('assert');
+const assert = require('assert')
 
-const { Agent, Duplicator, duplicator, MemoryGate } = require('../../');
+const { Agent, Duplicator, duplicator, MemoryGate } = require('../../dist')
 
 describe('Duplicator', () => {
   describe('#new', () => {

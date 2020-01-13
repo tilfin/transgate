@@ -1,14 +1,19 @@
-const ItemBuffer = require('../gate/buffer');
+import { ItemBuffer } from '../gate/buffer'
+import { GateItem } from '../gate/type';
 
 /**
  * Merging items from gates for Input
  */
-class Mixer {
+export class Mixer {
+  private _buffer: ItemBuffer<GateItem>;
+  private _runnerAliveSet: Set<any>
+  private _runners: any[]
+
   /**
    * @param  {...Gate} outGates - source gates
    */
   constructor(...inGates) {
-    this._buffer = new ItemBuffer();
+    this._buffer = new ItemBuffer<GateItem>();
     this._runnerAliveSet = new Set();
     this._runners = inGates.map((g, idx) => this._createRunner(g, idx));
   }
@@ -51,14 +56,8 @@ class Mixer {
  * @param  {...Gate} outGates - source gates
  * @return {Mixer}
  */
-function mixer(...inGates) {
+export function mixer(...inGates) {
   const m = new Mixer(...inGates);
   m.run();
   return m;
 }
-
-
-module.exports =  {
-  Mixer,
-  mixer,
-};

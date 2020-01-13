@@ -1,9 +1,10 @@
-const ReadlineStreamGate = require('./readline_stream');
+import { ReadLineStreamGate } from './readline_stream'
+import { GateItem } from './type'
 
 /**
  * Stdin Gate for Input
  */
-class StdinGate extends ReadlineStreamGate {
+export class StdinGate<T extends GateItem> extends ReadLineStreamGate<T> {
   constructor() {
     process.stdin.setEncoding('utf8');
     super(process.stdin);
@@ -12,7 +13,7 @@ class StdinGate extends ReadlineStreamGate {
   /**
    * @return {Promise<object>} - A promise that resolves the item when recevied
    */
-  receive() {
+  receive(): Promise<T | null> {
     return super.receive();
   }
 
@@ -21,9 +22,7 @@ class StdinGate extends ReadlineStreamGate {
    * @param  {string} data - a line from stdin
    * @return {object} item returned to the receiver
    */
-  _parse(data) {
+  _parse(data: string): T {
     return JSON.parse(data);
   }
 }
-
-module.exports = StdinGate

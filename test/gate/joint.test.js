@@ -1,5 +1,5 @@
-const assert = require('assert');
-const JointGate = require('../../lib/gate/joint');
+const assert = require('assert')
+const { JointGate } = require('../../dist/lib/gate/joint')
 
 describe('JointGate', () => {
 

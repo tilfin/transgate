@@ -1,6 +1,6 @@
-const assert = require('assert');
+const assert = require('assert')
 
-const { Agent, Mixer, mixer, MemoryGate } = require('../../');
+const { Agent, Mixer, mixer, MemoryGate } = require('../../dist')
 
 describe('Mixer', () => {
   describe('#new and #run', () => {

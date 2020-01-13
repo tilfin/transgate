@@ -1,9 +1,13 @@
-const ItemBuffer = require('./buffer');
+import { ItemBuffer } from './buffer'
+import { GateItem } from './type';
 
 /**
  * Joint between two agents
  */
-class JointGate {
+export class JointGate<T extends GateItem> {
+
+  private _buffer: ItemBuffer<T>
+
   constructor() {
     this._buffer = new ItemBuffer();
   }
@@ -11,17 +15,15 @@ class JointGate {
   /**
    * @return {Promise<object>} - a promise that resolves the item when buffer contains or sended
    */
-  async receive() {
-    return await this._buffer.read();
+  receive(): Promise<T | null> {
+    return this._buffer.read();
   }
 
   /**
    * @param  {object} item - sending item
    * @return {Promise} - a promise that resolves immediately
    */
-  async send(item) {
+  async send(item: T | null) {
     await this._buffer.write(item);
   }
 }
-
-module.exports = JointGate;
