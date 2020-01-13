@@ -1,21 +1,21 @@
 import { ItemBuffer } from '../gate/buffer'
-import { GateItem } from '../gate/type';
+import { GateItem, InGate } from '../gate/type'
 
 /**
  * Merging items from gates for Input
  */
-export class Mixer {
-  private _buffer: ItemBuffer<GateItem>;
-  private _runnerAliveSet: Set<any>
-  private _runners: any[]
+export class Mixer<T extends GateItem> {
+  private _buffer: ItemBuffer<T>;
+  private _runnerAliveSet: Set<number>
+  private _runners: Promise<void>[]
 
   /**
    * @param  {...Gate} outGates - source gates
    */
-  constructor(...inGates) {
-    this._buffer = new ItemBuffer<GateItem>();
+  constructor(...inGates: InGate<T>[]) {
+    this._buffer = new ItemBuffer<T>();
     this._runnerAliveSet = new Set();
-    this._runners = inGates.map((g, idx) => this._createRunner(g, idx));
+    this._runners = inGates.map((g: InGate<T>, idx) => this._createRunner(g, idx));
   }
 
   /**
@@ -32,7 +32,7 @@ export class Mixer {
     return await this._buffer.read();
   }
 
-  async _createRunner(gate, idx) {
+  async _createRunner(gate: InGate<T>, idx: number) {
     this._runnerAliveSet.add(idx);
 
     let item;
@@ -43,7 +43,7 @@ export class Mixer {
     await this._destroyRunner(idx);
   }
 
-  async _destroyRunner(idx) {
+  async _destroyRunner(idx: number) {
     this._runnerAliveSet.delete(idx);
     if (this._runnerAliveSet.size === 0) {
       await this._buffer.write(null);  
@@ -56,8 +56,8 @@ export class Mixer {
  * @param  {...Gate} outGates - source gates
  * @return {Mixer}
  */
-export function mixer(...inGates) {
-  const m = new Mixer(...inGates);
+export function mixer<T extends GateItem>(...inGates: InGate<T>[]) {
+  const m = new Mixer<T>(...inGates);
   m.run();
   return m;
 }
