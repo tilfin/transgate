@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/transgate.svg)](https://www.npmjs.com/package/transgate)
 [![Node](https://img.shields.io/node/v/transgate.svg)]()
-[![document](https://img.shields.io/badge/document-0.5.0-orange.svg)](https://tilfin.github.io/transgate/transgate/0.5.0/)
+[![document](https://img.shields.io/badge/document-0.6.0-orange.svg)](https://tilfin.github.io/transgate/transgate/0.6.0/)
 [![License](https://img.shields.io/github/license/tilfin/transgate.svg)]()
 [![dependencies Status](https://david-dm.org/tilfin/transgate/status.svg)](https://david-dm.org/tilfin/transgate)
 [![Build Status](https://travis-ci.org/tilfin/transgate.svg?branch=master)](https://travis-ci.org/tilfin/transgate)
