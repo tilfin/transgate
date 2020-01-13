@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { Agent, JointGate, MemoryGate } = require('../../');
+const { Agent, JointGate, MemoryGate } = require('../../dist')
 
 describe('Agent', () => {
 

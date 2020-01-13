@@ -1,7 +1,7 @@
-const fs = require('fs');
-const assert = require('assert');
+const fs = require('fs')
+const assert = require('assert')
 
-const WriteFileGate = require('../../lib/gate/write_file');
+const { WriteFileGate } = require('../../dist/lib/gate/write_file')
 
 describe('WriteFileGate', () => {
 

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const MemoryGate = require('../../lib/gate/memory');
+const { MemoryGate } = require('../../dist/lib/gate/memory')
 
 describe('MemoryGate', () => {
 

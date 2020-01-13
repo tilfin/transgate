@@ -1,7 +1,7 @@
-const assert = require('assert');
-const request = require('supertest');
+const assert = require('assert')
+const request = require('supertest')
 
-const HttpServerGate = require('../../lib/gate/http_server');
+const { HttpServerGate } = require('../../dist/lib/gate/http_server')
 
 describe('HttpServerGate', () => {
 

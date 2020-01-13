@@ -1,7 +1,7 @@
-const assert = require('assert');
-const stdMocks = require('std-mocks');
+const assert = require('assert')
+const stdMocks = require('std-mocks')
 
-const StdoutGate = require('../../lib/gate/stdout');
+const { StdoutGate } = require('../../dist/lib/gate/stdout')
 
 describe('StdoutGate', () => {
 

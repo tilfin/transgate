@@ -1,5 +1,5 @@
-const assert = require('assert');
-const IntervalGate = require('../../lib/gate/interval');
+const assert = require('assert')
+const { IntervalGate } = require('../../dist/lib/gate/interval')
 
 describe('IntervalGate', () => {
 
@@ -14,8 +14,8 @@ describe('IntervalGate', () => {
 
         const d1 = item2.time.getTime() - item1.time.getTime();
         const d2 = item3.time.getTime() - item2.time.getTime();
-        assert.ok(d1 > 290 && d1 < 310);
-        assert.ok(d2 > 290 && d2 < 310);
+        assert.ok(d1 > 290 && d1 < 320);
+        assert.ok(d2 > 290 && d2 < 320);
 
         const promise4 = gate.receive();
         gate.clear();
@@ -27,7 +27,7 @@ describe('IntervalGate', () => {
         const item2 = await gate.receive();
 
         const d1 = item2.time.getTime() - item1.time.getTime();
-        assert.ok(d1 > 290 && d1 < 310);
+        assert.ok(d1 > 290 && d1 < 320);
 
         const promise4 = gate.receive();
         gate.clear();

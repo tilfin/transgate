@@ -1,7 +1,7 @@
 const assert = require('assert');
 
-const HttpClientGate = require('../../lib/gate/http_client');
-const HttpServerGate = require('../../lib/gate/http_server');
+const { HttpClientGate } = require('../../dist/lib/gate/http_client')
+const { HttpServerGate } = require('../../dist/lib/gate/http_server')
 
 describe('HttpClientGate', () => {
 

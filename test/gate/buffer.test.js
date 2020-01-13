@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const ItemBuffer = require('../../lib/gate/buffer');
+const { ItemBuffer } = require('../../dist/lib/gate/buffer')
 
 describe('ItemBuffer', () => {
 
