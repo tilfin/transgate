@@ -1,21 +1,30 @@
+import { GateItem } from "./type"
+
 /**
  * Interval Gate for Input providing items at regular intervals
  */
-class IntervalGate {
+export class IntervalGate {
+
+  private _intervalMS: number
+  private _fire: Function | null
+  private _isFirst: boolean
+  private _timer: NodeJS.Timeout | null
+
   /**
    * @param {number} seconds - receiving to be resolved every specified seconds
    */
-  constructor(seconds) {
+  constructor(seconds: number) {
     this._intervalMS = seconds * 1000;
     this._fire = null;
     this._isFirst = true;
+    this._timer = null;
   }
 
   /**
    * Item is `{ time: <Date> }`.
    * @return {Promise} - A promise that resolves an item when the item is written
    */
-  receive() {
+  receive(): Promise<IntervalGateItem> {
     if (this._fire) {
       return Promise.reject(new Error('Do not double receive'));
     }
@@ -47,7 +56,7 @@ class IntervalGate {
     this._isFirst = true; // revert initial
   }
 
-  _kickTimer(origin) {
+  _kickTimer(origin: Date) {
     const nowTime = new Date().getTime();
     let nextTime = origin.getTime() + this._intervalMS;
     while (nextTime <= nowTime) {
@@ -71,4 +80,6 @@ class IntervalGate {
   }
 }
 
-module.exports = IntervalGate;
+export interface IntervalGateItem extends GateItem {
+  time: Date
+}

@@ -1,7 +1,13 @@
+import { GateItem } from "./type"
+
 /**
  * Item buffer for Long polling or Joint
  */
-class ItemBuffer {
+export class ItemBuffer<T extends GateItem> {
+
+  private _list: Array<T | null>
+  private _on: Function | null
+
   constructor() {
     this._list = [];
     this._on = null;
@@ -17,13 +23,13 @@ class ItemBuffer {
   /**
    * @return {Promise} - A promise that resolves an item when the item is written
    */
-  read() {
+  read(): Promise<T | null> {
     if (this._list.length) {
-      return Promise.resolve(this._list.shift());
+      return Promise.resolve(this._list.shift() || null);
     }
 
     return new Promise(resolve => {
-      this._on = item => {
+      this._on = (item: T | null) => {
         this._on = null;
         resolve(item);
       }
@@ -34,7 +40,7 @@ class ItemBuffer {
    * @param  {object} item - written item
    * @return {Promise} - a promise that resolves when the item has been written
    */
-  write(item) {
+  write(item: T | null) {
     this._list.push(item);
     if (this._on) {
       this._on(this._list.shift());
@@ -42,5 +48,3 @@ class ItemBuffer {
     return Promise.resolve();
   }
 }
-
-module.exports = ItemBuffer;

@@ -1,19 +1,22 @@
-const readline = require('readline');
-
-const ItemBuffer = require('./buffer');
+import readline from 'readline'
+import { Readable } from 'stream'
+import { ItemBuffer } from './buffer'
+import { InGate } from './type'
 
 /**
  * Readline stream Gate for Input
  */
-class ReadLineStreamGate {
+export abstract class ReadLineStreamGate<T> implements InGate<T> {
+
+  private _buffer: ItemBuffer<T>
 
   /**
    * @param  {stream.Readable} readStream - readable stream
    */
-  constructor(readStream) {
-    this._buffer = new ItemBuffer();
+  constructor(readStream: Readable) {
+    this._buffer = new ItemBuffer<T>();
 
-    const rl = readline.createInterface({
+    readline.createInterface({
       input: readStream,
       crlfDelay: Infinity,
     })
@@ -28,7 +31,7 @@ class ReadLineStreamGate {
   /**
    * @return {Promise<object>} - A promise that resolves the item when a line can be read
    */
-  receive() {
+  receive(): Promise<T | null>  {
     return this._buffer.read();
   }
 
@@ -38,10 +41,5 @@ class ReadLineStreamGate {
    * @param  {string} data - a line from stdin
    * @return {object} item returned to the receiver
    */
-  _parse(data) {
-    return data;
-  }
-
+  abstract _parse(data: string): T
 }
-
-module.exports = ReadLineStreamGate;

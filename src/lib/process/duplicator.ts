@@ -1,7 +1,9 @@
 /**
  * Copying and item and sending all gates for Output
  */
-class Duplicator {
+export class Duplicator {
+
+  private _outGates: any[]
   /**
    * @param  {...Gate} outGates - destination gates
    */
@@ -25,12 +27,6 @@ class Duplicator {
  * @param  {...Gate} outGates - destination gates
  * @return {Duplicator}
  */
-function duplicator(...outGates) {
+export function duplicator(...outGates) {
   return new Duplicator(...outGates);
 }
-
-
-module.exports =  {
-  Duplicator,
-  duplicator,
-};

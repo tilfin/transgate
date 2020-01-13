@@ -1,14 +1,18 @@
+import { OutGate, GateItem } from './type'
+
 /**
  * Stdout Gate for Output
  */
-class StdoutGate {
+export class StdoutGate<T extends GateItem> implements OutGate<T> {
   /**
    * @param  {object} item - sending item
    * @return {Promise} - a promise that resolves when the item has been sended
    */
-  send(item) {
-    if (item === null) return;
-    process.stdout.write(this._stringify(item));
+  send(item: T): Promise<void> {
+    if (item !== null) {
+      process.stdout.write(this._stringify(item));
+    }
+    return Promise.resolve();
   }
 
   /**
@@ -16,9 +20,7 @@ class StdoutGate {
    * @param  {object} item - sended item
    * @return {string} written to stdout
    */
-  _stringify(item) {
+  _stringify(item: T): string {
     return JSON.stringify(item) + '\n';
   }
 }
-
-module.exports = StdoutGate;

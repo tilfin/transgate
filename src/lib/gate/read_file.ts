@@ -1,19 +1,18 @@
-const fs = require('fs');
-
-const ReadlineStreamGate = require('./readline_stream');
+import fs from 'fs'
+import { ReadLineStreamGate } from './readline_stream'
 
 /**
  * Read file Gate for Input
  */
-class ReadFileGate extends ReadlineStreamGate {
-  constructor(path) {
+export class ReadFileGate<T> extends ReadLineStreamGate<T> {
+  constructor(path: string) {
     super(fs.createReadStream(path));
   }
 
   /**
    * @return {Promise<object>} - A promise that resolves the item when recevied
    */
-  receive() {
+  async receive(): Promise<T | null> {
     return super.receive();
   }
 
@@ -22,9 +21,7 @@ class ReadFileGate extends ReadlineStreamGate {
    * @param  {string} data - a line from stdin
    * @return {object} item returned to the receiver
    */
-  _parse(data) {
+  _parse(data: string): T {
     return JSON.parse(data);
   }
 }
-
-module.exports = ReadFileGate;

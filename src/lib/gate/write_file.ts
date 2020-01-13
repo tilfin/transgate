@@ -1,28 +1,29 @@
-const fs = require('fs');
-const util = require('util');
+import fs from 'fs'
+import util from 'util'
+import { OutGate, GateItem } from './type'
+
 const appendFile = util.promisify(fs.appendFile);
 
 /**
  * Write file Gate for Input/Output
  */
-class WriteFileGate {
+export class WriteFileGate<T extends GateItem> implements OutGate<T> {
 
   /**
    * @param {string} path - file path
    */
-  constructor(path) {
-    this._path = path;
+  constructor(private path: string) {
   }
 
   /**
    * @param  {object} item - written item
    * @return {Promise} - a promise that resolves when the item has been written
    */
-  async send(item) {
+  async send(item: T | null) {
     if (item === null) {
-      return await this.close();
+      return;
     }
-    await appendFile(this._path, this._stringify(item) + '\n', 'utf8');
+    await appendFile(this.path, this._stringify(item) + '\n', 'utf8');
   }
 
   /**
@@ -30,9 +31,7 @@ class WriteFileGate {
    * @param  {object} item - sended item
    * @return {string} written to stdout
    */
-  _stringify(data) {
+  _stringify(data: T) {
     return JSON.stringify(data)
   }
 }
-
-module.exports = WriteFileGate;
