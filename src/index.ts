@@ -1,2 +1,2 @@
-export * from './lib/process'
 export * from './lib/gate'
+export * from './lib/process'

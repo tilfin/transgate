@@ -1,3 +1,4 @@
+export { GateItem, InGate, OutGate } from './type'
 export { JointGate } from './joint'
 export { ReadFileGate } from './read_file'
 export { WriteFileGate } from './write_file'
