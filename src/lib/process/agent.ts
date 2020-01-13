@@ -7,13 +7,13 @@ export interface IAgent {
 /**
  * Process an item read from Input Gate and write into Output Gate
  */
-export class Agent<IT extends GateItem, I extends InGate<IT>, O extends OutGate<any> | { [key: string]: OutGate<any> }> implements IAgent {
+export class Agent<T extends GateItem, O extends OutGate<any> | { [key: string]: OutGate<any> }> implements IAgent {
 
   /**
    * @param {InGate} ingate - Input gate
    * @param {OutGate} outgate - Output gate or its map
    */
-  constructor(private ingate: I, private outgate: O) {
+  constructor(private ingate: InGate<T>, private outgate: O) {
   }
 
   /**
@@ -52,7 +52,7 @@ export class Agent<IT extends GateItem, I extends InGate<IT>, O extends OutGate<
    * @param {OutputGate} outgate - Output gate
    * @return {object|array} written item(s). it is an array if output is plural. `undefined` is not written.
    */
-  async main(item: IT, outgate: O): Promise<any> {
+  async main(item: T, outgate: O): Promise<any> {
   }
 
   private async sendToOutgate(item: any) {
@@ -70,8 +70,8 @@ export class Agent<IT extends GateItem, I extends InGate<IT>, O extends OutGate<
    * @param  {Promise} main - Process main Promise function
    * @return {Agent} created one
    */
-  static create(ingate: InGate<any>, outgate: any, main: (item: any, outgate: any) => Promise<any>): Agent<any, any, any> {
-    const action = new Agent<any, any, any>(ingate, outgate);
+  static create(ingate: InGate<any>, outgate: any, main: (item: any, outgate: any) => Promise<any>): Agent<any, any> {
+    const action = new Agent<any, any>(ingate, outgate);
     action.main = main;
     return action;
   }
